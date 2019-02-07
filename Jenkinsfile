@@ -1,3 +1,5 @@
+def properties = readProperties file: './config-manager/dev/jenkins.properties'
+
 pipeline {
     agent any
     environment {
@@ -10,7 +12,7 @@ pipeline {
     stages {
     	  stage('checkout git') {
               steps {
-                  git branch: branch, credentialsId: 'richard.jqchen@gmail.com', url: scmUrl
+                  git branch: branch, url: scmUrl
              }
           }	
           stage('Build') {
@@ -29,7 +31,6 @@ pipeline {
               }
               steps {
                  script {
-		     properties = readProperties file: development
 		     echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
        		  }
               }
@@ -40,7 +41,6 @@ pipeline {
               }
               steps {
 	          script {
-	               properties = readProperties file: production
 	      	       echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
 	         }
               }
