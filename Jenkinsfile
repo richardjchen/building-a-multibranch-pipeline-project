@@ -12,6 +12,8 @@ def getProperties(envfile, name) {
     	       
 	 } else {
 	       echo "jenkins.properties does not exist"
+	       properties = readProperties file: envfile
+    	       return properties.getProperty(name)
 	 }
     }
 }
