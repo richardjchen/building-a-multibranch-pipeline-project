@@ -31,7 +31,7 @@ pipeline {
               }
               steps {
                  script {
-                     echo "build111 branch successful!"
+                     echo "build112 branch successful!"
 		     echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
        		  }
               }
