@@ -1,24 +1,4 @@
 properties = null
-properties1 = null
-
-def loadProperties(envfile) {
-  node {
-         dir('envDir') {
-             git url: 'https://github.com/richardjchen/building-a-multibranch-pipeline-project.git'
-	 }	  
-	  def exists = fileExists 'envDir/jenkins.properties'
-	  
-	  if (exists){
-    		echo "jenkins.properties exists"
-	  } else {
-	       echo "jenkins.properties does not exist"
-	  }
-	  
-	 properties = readProperties file: envfile
-	 properties1 = readProperties file: 'jenkins.properties'
-         echo "Immediate one ${properties1.ACR_LOGINSERVER}"
-  }
-}
 
 def getProperties(envfile, name) {
   node {
