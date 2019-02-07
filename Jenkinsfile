@@ -6,7 +6,7 @@ def loadProperties(envfile) {
          dir('envDir') {
              git url: 'https://github.com/richardjchen/building-a-multibranch-pipeline-project.git'
 	 }	  
-	  def exists = fileExists '/var/jenkins_home/workspace/nch-pipeline-project_development/envDir/jenkins.properties'
+	  def exists = fileExists 'envDir/jenkins.properties'
 	  
 	  if (exists){
     		echo "jenkins.properties exists"
@@ -18,6 +18,22 @@ def loadProperties(envfile) {
 	 properties1 = readProperties file: 'jenkins.properties'
          echo "Immediate one ${properties1.ACR_LOGINSERVER}"
   }
+}
+
+def getProperties(envfile, name) {
+  node {
+         checkout scm	  
+	 def exists = fileExists envfile
+	 
+	 if (exists){
+    	       echo "jenkins.properties exists"
+    	       properties = readProperties file: envfile
+    	       return properties.getProperty(name)
+    	       
+	 } else {
+	       echo "jenkins.properties does not exist"
+	 }
+    }
 }
 
 pipeline {
@@ -51,8 +67,8 @@ pipeline {
               }
               steps {
                  script {
-                     echo "build114 branch successful!"
-	             loadProperties(development)
+                     echo "build development branch"
+	             println getProperties(development, "ACR_LOGINSERVER")
 		     echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
        		  }
               }
@@ -63,9 +79,9 @@ pipeline {
               }
               steps {
 	          script {
-	      	      echo "build114 branch successful!"
-		      loadProperties(production)
-	              echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
+	      	     echo "build production branch"
+	             println getProperties(production, "ACR_LOGINSERVER")
+	             echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
 	         }
               }
           }
