@@ -1,10 +1,33 @@
 properties = null
 
+def textEncodeBase64(strEncode) {
+
+    def encodedValue = strEncode.bytes.encodeBase64().toString()
+    println "encodedValue--> ${encodedValue}"
+    
+    return encodedValue
+    
+}
+
+def textDecodeBase64(strDecode) {
+
+    def decodedValue = " "
+    byte[] decoded = strDecode.decodeBase64()
+    decodedValue = new String(decoded)
+    
+    println "decodedValue--> ${decodedValue}"
+    
+    return decodedValue
+}
+
 def getProperties(envfile, name) {
   
 	 def keyValue = " "
 	 def exists = fileExists envfile
-	 
+	
+	 def encodedName = textEncodeBase64(name)
+	 def decodedName = textDecodeBase64(encodedName)
+		 
 	 if (exists){
     	       echo "jenkins.properties file exists"
     	       properties = readProperties file: envfile
@@ -32,7 +55,9 @@ def getProperties(envfile, name) {
 	 }
 	
 	 echo "jenkins.properties keyValue: ${keyValue}"
-         return keyValue
+	
+	 def encodedValue = textEncodeBase64(keyValue)
+         return encodedValue
 }
 
 pipeline {
