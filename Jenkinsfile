@@ -1,7 +1,5 @@
 import biz.source_code.base64Coder.Base64Coder
 
-@Grab(group='biz.source_code', module='base64coder')
-
 properties = null
 
 def textEncodeBase64UTF(strEncode) {
