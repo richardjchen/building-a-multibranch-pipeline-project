@@ -1,21 +1,70 @@
+import org.jenkinsci.plugins.pipeline.utility.steps.shaded.org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
+
 properties = null
 
+def textEncodeBase64(strEncode) {
+
+    def encodedValue = Base64Coder.encodeString(strEncode)
+
+    println "encodedValue--> ${encodedValue}"
+    
+    return encodedValue
+    
+}
+
+def textDecodeBase64(strDecode) {
+
+    def decodedValue = Base64Coder.decodeString(strDecode)
+    
+    println "decodedValue--> ${decodedValue}"
+    
+    return decodedValue
+}
+
 def getProperties(envfile, name) {
-  node {
-         checkout scm	  
+  
+	 def keyValue = " "
 	 def exists = fileExists envfile
-	 
+	
+	 def encodedName = Base64Coder.encodeString(name)
+	 def decodedName = Base64Coder.decodeString(encodedName)
+	
+	 println "jenkins.properties encoded key name: ${encodedName}"
+	 println "jenkins.properties encoded key name: ${decodedName}"
+	
 	 if (exists){
-    	       echo "jenkins.properties exists"
+    	       println "jenkins.properties file exists"
     	       properties = readProperties file: envfile
-    	       return properties.getProperty(name)
+
+	       if (properties.size() > 0){
+    		    println "jenkins.properties value exists"
+		    keys= properties.keySet()
+		    keyValue = properties[decodedName]
+		    
+		    println "set them up as sytem environment variables for application to grab the value"
+		       
+		    keys= properties.keySet()
+                    for(key in keys) {
+                        value = properties["${key}"]
+			env."${key}" = "${value}"
+                        println "populate them as sytem environment variables: ${value}"
+                    }
+		       
+	        } else {
+	             println "jenkins.properties does not exist"
+	       }     	    
     	       
 	 } else {
 	       echo "jenkins.properties does not exist"
-	       properties = readProperties file: envfile
-    	       return properties.getProperty(name)
 	 }
-    }
+	
+	 echo "jenkins.properties keyValue: ${keyValue}"
+	
+	 def encodedValue = textEncodeBase64(keyValue)
+	
+	 echo "jenkins.properties encoded keyValue: ${encodedValue}"
+	
+         return encodedValue
 }
 
 pipeline {
@@ -24,33 +73,47 @@ pipeline {
         CI = 'true'
         branch = 'master'
 	scmUrl = 'https://github.com/richardjchen/building-a-multibranch-pipeline-project.git'
-	development = 'config-manager/dev/jenkins.properties'
-        production = 'config-manager/prod/jenkins.properties'
+	development = './config-manager/dev/jenkins.properties'
+        production = './config-manager/prod/jenkins.properties'
     }
     stages {
     	  stage('checkout git') {
               steps {
-                  git branch: branch, url: scmUrl
+                  git branch: branch, credentialsId: 'richard.jqchen@gmail.com', url: scmUrl
              }
           }	
           stage('Build') {
-              steps {
-                  echo "build branch successful!"
+	      steps {
+		  echo "build branch successful"
               }
           }
           stage('Test') {
               steps {
-                  echo "test successful!"
+                  echo "test successful"
               }
           }
+	  stage('check workspace files') {
+              steps {
+                  
+		  script {
+		    	 def  FILES_LIST = sh (script: "ls   '${workspace}'", returnStdout: true).trim()
+	                 //DEBUG
+                         echo "FILES_LIST : ${FILES_LIST}"
+                         //PARSING
+                         for(String ele : FILES_LIST.split("\\r?\\n")){ 
+                             println ">>>${ele}<<<"     
+                         }	  
+       		  }
+              }
+          }     
           stage('Deliver for development') {
               when {
                   branch 'development' 
               }
               steps {
                  script {
-                     echo "build development branch"
-	             println getProperties(development, "ACR_LOGINSERVER")
+		     echo "build114 branch successful!"
+		     println getProperties(development, "ACR_LOGINSERVER")
 		     echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
        		  }
               }
@@ -61,9 +124,9 @@ pipeline {
               }
               steps {
 	          script {
-	      	     echo "build production branch"
-	             println getProperties(production, "ACR_LOGINSERVER")
-	             echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
+	               echo "build114 branch successful!"
+		       println getProperties(production, "ACR_LOGINSERVER")
+	      	       echo "Running build on git repo ${properties.ACR_LOGINSERVER} branch ${properties.ACR_NAMESPACE}"
 	         }
               }
           }
