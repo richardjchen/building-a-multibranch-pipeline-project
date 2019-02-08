@@ -1,3 +1,5 @@
+import org.jenkinsci.plugins.pipeline.utility.steps.shaded.org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
+
 properties = null
 
 def textEncodeBase64UTF(strEncode) {
