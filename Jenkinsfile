@@ -2,23 +2,23 @@ import org.jenkinsci.plugins.pipeline.utility.steps.shaded.org.yaml.snakeyaml.ex
 
 properties = null
 
-def textEncodeBase64UTF(strEncode) {
+def textEncodeBase64(strEncode) {
 
     def encodedValue = Base64Coder.encodeString(strEncode)
 
     println "encodedValue--> ${encodedValue}"
     
-    return encodedValueUTF
+    return encodedValue
     
 }
 
-def textDecodeBase64UTF(strDecode) {
+def textDecodeBase64(strDecode) {
 
-    def decodedValueUTF = Base64Coder.decodeString(strDecode)
+    def decodedValue = Base64Coder.decodeString(strDecode)
     
-    println "decodedValue--> ${decodedValueUTF}"
+    println "decodedValue--> ${decodedValue}"
     
-    return decodedValueUTF
+    return decodedValue
 }
 
 def getProperties(envfile, name) {
@@ -57,7 +57,10 @@ def getProperties(envfile, name) {
 	
 	 echo "jenkins.properties keyValue: ${keyValue}"
 	
-	 def encodedValue = textEncodeBase64UTF(keyValue)
+	 def encodedValue = textEncodeBase64(keyValue)
+	
+	 echo "jenkins.properties encoded keyValue: ${encodedValue}"
+	
          return encodedValue
 }
 
