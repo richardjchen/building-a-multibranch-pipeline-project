@@ -1,4 +1,4 @@
-import biz.source_code.base64Coder.Base64Coder
+import org.jenkinsci.plugins.pipeline.utility.steps.shaded.org.yaml.snakeyaml.external.biz.base64Coder
 
 properties = null
 
