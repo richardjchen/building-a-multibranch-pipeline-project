@@ -1,13 +1,10 @@
-import static java.nio.charset.StandardCharsets.UTF_8
-
 properties = null
 
 def textEncodeBase64UTF(strEncode) {
 
-    def encodedValue = strEncode.getBytes(UTF_8)
-    def encodedValueUTF = encodedValue.encodeBase64Url().toString()
+    def encodedValue = encodeString(strEncode)
 
-    println "encodedValue--> ${encodedValueUTF}"
+    println "encodedValue--> ${encodedValue}"
     
     return encodedValueUTF
     
@@ -15,7 +12,7 @@ def textEncodeBase64UTF(strEncode) {
 
 def textDecodeBase64UTF(strDecode) {
 
-    def decodedValueUTF = new String(strDecode.decodeBase64Url())
+    def decodedValueUTF = decodeString(strDecode)
     
     println "decodedValue--> ${decodedValueUTF}"
     
