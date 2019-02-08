@@ -47,7 +47,7 @@ pipeline {
               steps {
                  script {
 		     echo "build114 branch successful!"
-		     println getProperties(development, serverName)
+		     println appProperty.getProperties(development, serverName)
        		  }
               }
           }
@@ -58,7 +58,7 @@ pipeline {
               steps {
 	          script {
 	               echo "build114 branch successful!"
-		       println getProperties(production, serverName)
+		       println appProperty.getProperties(production, serverName)
 	         }
               }
           }
