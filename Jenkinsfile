@@ -28,17 +28,20 @@ def getProperties(envfile, name) {
 	
 	 def encodedName = Base64Coder.encodeString(name)
 	 def decodedName = Base64Coder.decodeString(encodedName)
-		 
+	
+	 println "jenkins.properties encoded key name: ${encodedName}"
+	 println "jenkins.properties encoded key name: ${decodedName}"
+	
 	 if (exists){
-    	       echo "jenkins.properties file exists"
+    	       println "jenkins.properties file exists"
     	       properties = readProperties file: envfile
 
 	       if (properties.size() > 0){
-    		    echo "jenkins.properties value exists"
+    		    println "jenkins.properties value exists"
 		    keys= properties.keySet()
-		    keyValue = properties[name]
+		    keyValue = properties[decodedName]
 		    
-		    echo "set them up as sytem environment variables for application to grab the value"
+		    println "set them up as sytem environment variables for application to grab the value"
 		       
 		    keys= properties.keySet()
                     for(key in keys) {
@@ -48,7 +51,7 @@ def getProperties(envfile, name) {
                     }
 		       
 	        } else {
-	             echo "jenkins.properties does not exist"
+	             println "jenkins.properties does not exist"
 	       }     	    
     	       
 	 } else {
