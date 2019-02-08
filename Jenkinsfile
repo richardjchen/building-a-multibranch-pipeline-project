@@ -27,7 +27,7 @@ def getProperties(envfile, name) {
 	 def exists = fileExists envfile
 	
 	 def encodedName = textEncodeBase64UTF(name)
-	 def decodedName = textDecodeBase64UTF(encodedName)
+	 def decodedName = Base64Coder.decodeString(encodedName)
 		 
 	 if (exists){
     	       echo "jenkins.properties file exists"
