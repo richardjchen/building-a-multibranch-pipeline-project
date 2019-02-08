@@ -26,7 +26,7 @@ def getProperties(envfile, name) {
 	 def keyValue = " "
 	 def exists = fileExists envfile
 	
-	 def encodedName = textEncodeBase64UTF(name)
+	 def encodedName = Base64Coder.encodeString(name)
 	 def decodedName = Base64Coder.decodeString(encodedName)
 		 
 	 if (exists){
