@@ -1,23 +1,25 @@
+import static java.nio.charset.StandardCharsets.UTF_8
+
 properties = null
 
-def textEncodeBase64(strEncode) {
+def textEncodeBase64UTF(strEncode) {
 
-    def encodedValue = strEncode.bytes.encodeBase64().toString()
-    println "encodedValue--> ${encodedValue}"
+    def encodedValue = strEncode.getBytes(UTF_8)
+    def encodedValueUTF = encodedValue.encodeBase64Url().toString()
+
+    println "encodedValue--> ${encodedValueUTF}"
     
-    return encodedValue
+    return encodedValueUTF
     
 }
 
-def textDecodeBase64(strDecode) {
+def textDecodeBase64UTF(strDecode) {
 
-    def decodedValue = " "
-    byte[] decoded = strDecode.decodeBase64()
-    decodedValue = new String(decoded)
+    def decodedValueUTF = new String(strDecode.decodeBase64Url())
     
-    println "decodedValue--> ${decodedValue}"
+    println "decodedValue--> ${decodedValueUTF}"
     
-    return decodedValue
+    return decodedValueUTF
 }
 
 def getProperties(envfile, name) {
@@ -25,8 +27,8 @@ def getProperties(envfile, name) {
 	 def keyValue = " "
 	 def exists = fileExists envfile
 	
-	 def encodedName = textEncodeBase64(name)
-	 def decodedName = textDecodeBase64(encodedName)
+	 def encodedName = textEncodeBase64UTF(name)
+	 def decodedName = textDecodeBase64UTF(encodedName)
 		 
 	 if (exists){
     	       echo "jenkins.properties file exists"
@@ -56,7 +58,7 @@ def getProperties(envfile, name) {
 	
 	 echo "jenkins.properties keyValue: ${keyValue}"
 	
-	 def encodedValue = textEncodeBase64(keyValue)
+	 def encodedValue = textEncodeBase64UTF(keyValue)
          return encodedValue
 }
 
