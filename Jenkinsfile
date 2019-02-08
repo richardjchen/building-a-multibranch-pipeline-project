@@ -51,6 +51,7 @@ pipeline {
              }
           }	
           stage('Build') {
+	      steps {
 		  echo "build branch successful"
               }
           }
