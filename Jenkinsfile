@@ -1,10 +1,12 @@
-import org.jenkinsci.plugins.pipeline.utility.steps.shaded.org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
+import biz.source_code.base64Coder.Base64Coder
+
+@Grab(group='biz.source_code', module='base64coder')
 
 properties = null
 
 def textEncodeBase64UTF(strEncode) {
 
-    def encodedValue = encodeString(strEncode)
+    def encodedValue = Base64Coder.encodeString(strEncode)
 
     println "encodedValue--> ${encodedValue}"
     
@@ -14,7 +16,7 @@ def textEncodeBase64UTF(strEncode) {
 
 def textDecodeBase64UTF(strDecode) {
 
-    def decodedValueUTF = decodeString(strDecode)
+    def decodedValueUTF = Base64Coder.decodeString(strDecode)
     
     println "decodedValue--> ${decodedValueUTF}"
     
