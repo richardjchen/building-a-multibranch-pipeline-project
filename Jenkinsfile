@@ -51,23 +51,12 @@ pipeline {
              }
           }	
           stage('Build') {
-              steps {
-		  script {
-		     echo "build branch successful"
-		     def propValue = getProperties(development, "ACR_LOGINSERVER")
-		     echo "Running build on git repo ${propValue}"
-		  }
+		  echo "build branch successful"
               }
           }
           stage('Test') {
               steps {
-                  
-		  script {
-		     echo "test successful"
-		     def propValue =  getProperties(development, "ACR_LOGINSERVER")
-		     echo "Running test on git repo ${propValue}"
-		  
-       		  }
+                  echo "test successful"
               }
           }
 	  stage('check workspace files') {
